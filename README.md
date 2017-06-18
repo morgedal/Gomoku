@@ -1,2 +1,7 @@
 # Gomoku
-Gra w kółko i krzyżyk do 5 na planszy 19*19. 
+Gra w kółko i krzyżyk do 5 na planszy 19*19.
+
+Są trzy wersje funkcji oceniającej do wyboru, wystarczy zakomentować pozostałe i wybrać jedną. Wszystkie są do bani, bo albo jest to losowość albo coś co gra sensowniej, ale za to po kilku ruchach zaczyna tak długo obliczać następny, że szkoda gadać.
+
+Żeby rozpocząć rozgrywkę AI vs AI należy uruchomić funkcję main (bez żadnego parametru), lub funkcję gameLoop ( ażeby rozpocząć grę od wybranego pola : gameLoop (insertCircle x_pos y_pos createBoard) Cross , z ewentualną zamianą Circle i Cross  )
+ 
