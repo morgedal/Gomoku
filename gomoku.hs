@@ -1,5 +1,7 @@
 import Data.List
 import Data.Tree
+import System.Random
+import System.IO.Unsafe
 
 data Field = 
     NewLine
@@ -35,19 +37,11 @@ createBoard =
 insertCircle :: Int -> Int -> Board -> Board  
 insertCircle x y board =
     insertFigure x y board Circle
-{-
-o :: (Int,Int) -> Board -> Board    
-o (x,y) board =
-    insertCircle x y board
--}
+
 insertCross :: Int -> Int -> Board -> Board     
 insertCross x y board =
     insertFigure x y board Cross
-{-
-x :: (Int,Int) -> Board -> Board    
-x (xx,y) board =
-    insertCross xx y board  
--}  
+  
 insertFigure :: Int -> Int -> Board -> Field -> Board  
 insertFigure x y (Board board) figure = 
     Board $
@@ -100,13 +94,13 @@ isArithmeticSequence (x:y:z:xs) = (x - y) == (y - z) && isArithmeticSequence (y:
 
 findArithmeticSequence :: Int -> Int -> [Int] -> [Int] 
 findArithmeticSequence x0 diff list =
-    intersect [x0,x0+diff..x0+diff*1000] list
+    intersect [x0,x0+diff..x0+diff*400] list
 
 findAllSequencesOfLength :: Int -> Int -> [Int] -> [[Int]]
 findAllSequencesOfLength _ _ [] = []    
 findAllSequencesOfLength len diff list@(h:tail)
     | (length list >= len) 
-        = (sublists 0) ++ findSequencesOfLength len diff tail  
+        = (sublists 0) ++ findAllSequencesOfLength len diff tail                --All
     | otherwise = []
     where sublist x0 = take len (findArithmeticSequence x0 diff list)
           sublists 360 = []
@@ -133,48 +127,59 @@ checkIfGameOver board
     where crossList = getCrossesIndexList board
           circleList = getCirclesIndexList board
     
-test1 = insertCross 1 1 $ insertCross 1 2 $ insertCross 1 3 $ insertCross 1 4 $ insertCross 1 5 createBoard
-test2 = insertCircle 1 1 $ insertCircle 2 1 $ insertCircle 3 1 $ insertCircle 4 1 $ insertCircle 5 1 createBoard
-test3 = insertCross 1 1 $ insertCross 2 2 $ insertCross 3 3 $ insertCross 4 4 $ insertCross 5 5 createBoard    
-test4 = insertCross 5 1 $ insertCross 4 2 $ insertCross 3 3 $ insertCross 2 4 $ insertCross 1 5 createBoard    
-test5 = insertCircle 5 1 $ insertCross 4 2 $ insertCross 3 3 $ insertCircle 2 4 $ insertCross 1 5 createBoard     
-    
---Assuming that AI plays with Crosses, arg before * is weight   
 rankBoard :: Board -> Int 
 rankBoard board =
     1000 * length ( findSequencesOfLength 5 1 $ getCrossesIndexList board ) +
     10 * length ( findSequencesOfLength 4 1 $ getCrossesIndexList board ) +
     5 * length ( findSequencesOfLength 3 1 $ getCrossesIndexList board ) +
+    2 * length ( findSequencesOfLength 2 1 $ getCrossesIndexList board ) +
     1000 * length ( findSequencesOfLength 5 19 $ getCrossesIndexList board ) +
     10 * length ( findSequencesOfLength 4 19 $ getCrossesIndexList board ) +
     5 * length ( findSequencesOfLength 3 19 $ getCrossesIndexList board ) +
-{-    1000 * length ( findSequencesOfLength 5 18 $ getCrossesIndexList board ) +
+    2 * length ( findSequencesOfLength 2 19 $ getCrossesIndexList board ) +
+    1000 * length ( findSequencesOfLength 5 18 $ getCrossesIndexList board ) +
     10 * length ( findSequencesOfLength 4 18 $ getCrossesIndexList board ) +
     5 * length ( findSequencesOfLength 3 18 $ getCrossesIndexList board ) +
-    --2 * length ( findSequencesOfLength 2 18 $ getCrossesIndexList board ) +
+    2 * length ( findSequencesOfLength 2 18 $ getCrossesIndexList board ) +
     1000 * length ( findSequencesOfLength 5 20 $ getCrossesIndexList board ) +
     10 * length ( findSequencesOfLength 4 20 $ getCrossesIndexList board ) +
     5 * length ( findSequencesOfLength 3 20 $ getCrossesIndexList board ) +
+    2 * length ( findSequencesOfLength 2 20 $ getCrossesIndexList board ) +
        -----------------------------------------------------------------
-    1000 * length ( findSequencesOfLength 5 1 $ getCirclesIndexList board )-} 
+    1000 * length ( findSequencesOfLength 5 1 $ getCirclesIndexList board )- 
     10 * length ( findSequencesOfLength 4 1 $ getCirclesIndexList board ) -
     5 * length ( findSequencesOfLength 3 1 $ getCirclesIndexList board ) -
+    2 * length ( findSequencesOfLength 2 1 $ getCrossesIndexList board ) -
     1000 * length ( findSequencesOfLength 5 19 $ getCirclesIndexList board ) -
     10 * length ( findSequencesOfLength 4 19 $ getCirclesIndexList board ) -
-    5 * length ( findSequencesOfLength 3 19 $ getCirclesIndexList board ) 
-{-    1000 * length ( findSequencesOfLength 5 18 $ getCirclesIndexList board ) -
+    5 * length ( findSequencesOfLength 3 19 $ getCirclesIndexList board ) -
+    2 * length ( findSequencesOfLength 2 19 $ getCrossesIndexList board ) -
+    1000 * length ( findSequencesOfLength 5 18 $ getCirclesIndexList board ) -
     10 * length ( findSequencesOfLength 4 18 $ getCirclesIndexList board ) -
     5 * length ( findSequencesOfLength 3 18 $ getCirclesIndexList board ) -
+    2 * length ( findSequencesOfLength 2 18 $ getCrossesIndexList board ) -
     1000 * length ( findSequencesOfLength 5 20 $ getCirclesIndexList board ) -
     10 * length ( findSequencesOfLength 4 20 $ getCirclesIndexList board ) -
-    5 * length ( findSequencesOfLength 3 20 $ getCirclesIndexList board ) 
--}            
-test6 = o 7 6 $ x 8 6 $ o 8 5 $ x 7 5 $ o 9 4 $ x 10 3 $ o 9 6 $ x 6 4 $
-        o 9 7 $ x 9 5 $ o 10 7 $ x 7 4 $ o 8 7 $ x 5 3 $ o 4 2 $ x 11 7 $
-        o 6 7 createBoard
-        where o = insertCircle
-              x = insertCross
-
+    5 * length ( findSequencesOfLength 3 20 $ getCirclesIndexList board ) -
+    2 * length ( findSequencesOfLength 2 20 $ getCrossesIndexList board ) 
+{-
+rankBoard board
+    | findSequencesOfLength 5 1 crossList /= [] = 1000
+    | findSequencesOfLength 5 19 crossList /= [] = 1000
+    | findSequencesOfLength 5 20 crossList /= [] = 1000
+    | findSequencesOfLength 5 18 crossList /= [] = 1000
+    | findSequencesOfLength 5 1 circleList /= [] = -1000
+    | findSequencesOfLength 5 19 circleList /= [] = -1000
+    | findSequencesOfLength 5 20 circleList /= [] = -1000
+    | findSequencesOfLength 5 18 circleList /= [] = -1000
+    | otherwise = unsafePerformIO (getStdRandom (randomR (0, 100)))
+    where crossList = getCrossesIndexList board
+          circleList = getCirclesIndexList board
+-}    
+  
+--rankBoard board =
+--     unsafePerformIO (getStdRandom (randomR (0, 100)))
+             
 getNeighbours :: Int -> Int -> [(Int,Int)]
 getNeighbours 1 1 = [ (1,2),(2,2),(2,1) ]
 getNeighbours 19 1 = [ (18,1),(18,2),(19,2) ]
@@ -211,38 +216,69 @@ buildGameTree depth figure board
                 [ buildGameTree (depth-1) Cross (insertCircle x y board) | (x,y) <- getPossibleMoves board ]      
 
 --Player playing Circles is looking for minimal board value, Crosses for maximal
-
 generateMove' :: Tree (Board,Int) -> Board -> Field -> (Int,Int)
 generateMove' gametree board Cross =
     case (elemIndex (maximum list) list) of
         Just n -> getPossibleMoves board !! n
-        Nothing -> getPossibleMoves board !! 6
+        Nothing -> getPossibleMoves board !! 0
     where list = [ minimum m | m <- g ]
           g = map (map snd) ( get2Lev gametree )
 
 generateMove' gametree board Circle =
     case (elemIndex (minimum list) list) of
         Just n -> getPossibleMoves board !! n
-        Nothing -> getPossibleMoves board !! 6
+        Nothing -> getPossibleMoves board !! 0
     where list = [ maximum m | m <- g ]
           g = map (map snd) ( get2Lev gametree )
 
-
+generateMove :: Tree (Board,Int) -> Board -> Field -> (Int, Int)
 generateMove gametree board Circle =
     case (elemIndex (minimum c) c) of
         Just n -> (getPossibleMoves board) !! n
         Nothing -> (getPossibleMoves board) !! 0
     where c = map snd $ (levels gametree) !! 1
+    
 generateMove gametree board Cross =
     case (elemIndex (maximum c) c) of
         Just n -> (getPossibleMoves board) !! n
         Nothing -> (getPossibleMoves board) !! 0
     where c = map snd $ (levels gametree) !! 1     
-          
-test7 = insertCross 10 1 $ insertCross 10 2 $ insertCross 10 4 $ 
-        insertCross 10 5 createBoard
-        
+
+get2Lev :: Tree a -> [[a]]        
 get2Lev (Node val []) = []
 get2Lev (Node v (x:xs)) =
     ((levels x) !! 1) : get2Lev (Node v xs) 
+
+makeMove :: Field -> Board -> Board    
+makeMove Circle board =
+    insertCircle x y board  
+    where gt = buildGameTree 2 Circle board
+          (x,y) = generateMove' gt board Circle
+          
+makeMove Cross board =
+    insertCross x y board  
+    where gt = buildGameTree 2 Cross board
+          (x,y) = generateMove' gt board Cross   
+    
+gameLoop :: Board -> Field -> IO()    
+gameLoop board turn = do
+    putStrLn ( show board )
+    putStrLn "\n"
+    if checkIfGameOver board then do
+        putStrLn "Koniec gry"
+    else do
+        if turn == Cross then do
+            let boardAfterMove = makeMove Cross board
+            gameLoop boardAfterMove Circle
+        else do
+            let boardAfterMove = makeMove Circle board
+            gameLoop boardAfterMove Cross
+            
+main :: IO ()
+main = do
+    let board = insertCircle (unsafePerformIO (getStdRandom (randomR (1, 19)))) 
+                (unsafePerformIO (getStdRandom (randomR (1, 19)))) createBoard
+    gameLoop board Cross
+    
+          
 
