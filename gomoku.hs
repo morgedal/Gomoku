@@ -144,7 +144,7 @@ rankBoard board =
     1000 * length ( findSequencesOfLength 5 20 $ getCrossesIndexList board ) +
     10 * length ( findSequencesOfLength 4 20 $ getCrossesIndexList board ) +
     5 * length ( findSequencesOfLength 3 20 $ getCrossesIndexList board ) +
-    2 * length ( findSequencesOfLength 2 20 $ getCrossesIndexList board ) +
+    2 * length ( findSequencesOfLength 2 20 $ getCrossesIndexList board ) -
        -----------------------------------------------------------------
     1000 * length ( findSequencesOfLength 5 1 $ getCirclesIndexList board )- 
     10 * length ( findSequencesOfLength 4 1 $ getCirclesIndexList board ) -
