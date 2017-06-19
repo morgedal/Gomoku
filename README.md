@@ -8,8 +8,12 @@ Są trzy wersje funkcji oceniającej do wyboru, wystarczy zakomentować pozosta�
 Żeby zagrać przeciwnik vs AI ( co właściwie jest bez sensu przy takim AI ) należy wykonywać kolejno w ghci komendy:
 
 let board = insertCircle x y previousBoard  //za pierwszym razem zamiast previousBoard dajemy createBoard
+
 let previousBoard = makeMove Cross board
+
 checkIfGameOver previousBoard
+
 previousBoard  // w celu ewentualnego wyświetlenia
+
 
 I tak w kółko, aż wygramy, albo nam się znudzi czekanie na ruchy przeciwnika.
