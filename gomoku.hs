@@ -145,23 +145,23 @@ rankBoard board =
     10 * length ( findSequencesOfLength 4 20 $ getCrossesIndexList board ) +
     5 * length ( findSequencesOfLength 3 20 $ getCrossesIndexList board ) +
     2 * length ( findSequencesOfLength 2 20 $ getCrossesIndexList board ) -
-       -----------------------------------------------------------------
+    --------------------------------------------------------------------------
     1000 * length ( findSequencesOfLength 5 1 $ getCirclesIndexList board )- 
     10 * length ( findSequencesOfLength 4 1 $ getCirclesIndexList board ) -
     5 * length ( findSequencesOfLength 3 1 $ getCirclesIndexList board ) -
-    2 * length ( findSequencesOfLength 2 1 $ getCrossesIndexList board ) -
+    2 * length ( findSequencesOfLength 2 1 $ getCirclesIndexList board ) -
     1000 * length ( findSequencesOfLength 5 19 $ getCirclesIndexList board ) -
     10 * length ( findSequencesOfLength 4 19 $ getCirclesIndexList board ) -
     5 * length ( findSequencesOfLength 3 19 $ getCirclesIndexList board ) -
-    2 * length ( findSequencesOfLength 2 19 $ getCrossesIndexList board ) -
+    2 * length ( findSequencesOfLength 2 19 $ getCirclesIndexList board ) -
     1000 * length ( findSequencesOfLength 5 18 $ getCirclesIndexList board ) -
     10 * length ( findSequencesOfLength 4 18 $ getCirclesIndexList board ) -
     5 * length ( findSequencesOfLength 3 18 $ getCirclesIndexList board ) -
-    2 * length ( findSequencesOfLength 2 18 $ getCrossesIndexList board ) -
+    2 * length ( findSequencesOfLength 2 18 $ getCirclesIndexList board ) -
     1000 * length ( findSequencesOfLength 5 20 $ getCirclesIndexList board ) -
     10 * length ( findSequencesOfLength 4 20 $ getCirclesIndexList board ) -
     5 * length ( findSequencesOfLength 3 20 $ getCirclesIndexList board ) -
-    2 * length ( findSequencesOfLength 2 20 $ getCrossesIndexList board ) 
+    2 * length ( findSequencesOfLength 2 20 $ getCirclesIndexList board ) 
 {-
 rankBoard board
     | findSequencesOfLength 5 1 crossList /= [] = 1000
